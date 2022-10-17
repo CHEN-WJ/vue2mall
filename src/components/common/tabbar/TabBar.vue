@@ -1,6 +1,5 @@
 <template>
   <div>
-    <router-view></router-view>
     <div class="tab-bar">
       <slot></slot>
     </div>

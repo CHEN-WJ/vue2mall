@@ -12,5 +12,16 @@ module.exports = {
         'views': '@/views',
       }
     }
-  }
+  },
+  devServer: {
+    host: '10.120.15.59',
+    // https:true,
+    port: 8080,
+    client: {
+      webSocketURL: 'ws://10.120.15.59:8080/ws',
+    },
+    headers: {
+      'Access-Control-Allow-Origin': '*',
+    }
+  },
 }

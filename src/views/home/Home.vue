@@ -100,10 +100,10 @@ export default {
     }
   },
   activated () {
-    //进去时滚动到saveY位置
-    this.$refs.scroll.scrollTo(0, this.saveY, 0)
     // 经验之谈：加个刷新，否则可能出现问题
     this.$refs.scroll.refresh()
+    //进去时滚动到saveY位置
+    this.$refs.scroll.scrollTo(0, this.saveY, 0)
   },
   deactivated () {
     //记录离开时的位置

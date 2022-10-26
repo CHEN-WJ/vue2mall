@@ -14,11 +14,11 @@ module.exports = {
     }
   },
   // devServer: {
-  //   host: '10.120.15.59',
+  //   host: '10.120.1.249',
   //   // https:true,
   //   port: 8080,
   //   client: {
-  //     webSocketURL: 'ws://10.120.15.59:8080/ws',
+  //     webSocketURL: 'ws://10.120.1.249:8080/ws',
   //   },
   //   headers: {
   //     'Access-Control-Allow-Origin': '*',

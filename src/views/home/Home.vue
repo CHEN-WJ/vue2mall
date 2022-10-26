@@ -33,10 +33,9 @@ import NavBar from 'components/common/navbar/NavBar'
 import Scroll from 'components/common/scroll/Scroll'
 import TabControl from 'components/content/tabControl/TabControl'
 import GoodsList from 'components/content/goods/GoodsList'
-import BackTop from 'components/content/backTop/BackTop'
 
 import { getHomeMultiData, getHomeGoods } from 'network/home'
-import { debounce } from 'common/util'
+import { mixin, backTopMixin } from 'common/mixins'
 
 export default {
   name: 'Home',
@@ -48,8 +47,7 @@ export default {
     NavBar,
     Scroll,
     TabControl,
-    GoodsList,
-    BackTop
+    GoodsList
   },
   data () {
     return {
@@ -63,7 +61,6 @@ export default {
         'sell': { page: 0, list: [] }
       },
       defaultType: 'pop',
-      showTop: false,
       isTabControlTop: false,
       tabControlTop: 0,
       isShowTabControl: false,
@@ -75,6 +72,7 @@ export default {
       return this.goods[this.defaultType].list
     }
   },
+  mixins: [mixin, backTopMixin],
   // 组件创建完毕后就申请数据
   created () {
     //获取轮播图，推荐等数据
@@ -83,14 +81,6 @@ export default {
     this.getHomeGoods('pop')
     this.getHomeGoods('new')
     this.getHomeGoods('sell')
-  },
-  mounted () {
-    //对refresh()进行防抖
-    const refresh = debounce(this.$refs.scroll.refresh, 50)
-    //监听事件总线 -- 存在缺陷不建议使用
-    this.$bus.$on('itemImgLoad', () => {
-      refresh()
-    })
   },
   updated () {
     //获取tabControl的offsetTop的值
@@ -108,9 +98,8 @@ export default {
   deactivated () {
     //记录离开时的位置
     this.saveY = this.$refs.scroll.getSaveY()
-  },
-  beforeDestroy () {
-    this.$bus.$off('itemImgLoad')
+    //销毁监听itemImgListener函数的bus事件
+    this.$bus.$off('itemImgLoad', this.itemImgListener)
   },
   methods: {
     /**
@@ -132,14 +121,11 @@ export default {
       this.$refs.tabControl1.tabAcitve = index
       this.$refs.tabControl2.tabAcitve = index
     },
-    //返回顶部
-    topClick () {
-      this.$refs.scroll.scrollTo(0, 0, 300)
-    },
+
     //监听滚动
     scrollPosition (position) {
-      // 监听backTop，获取position的y坐标
-      this.showTop = -position.y > 1000
+      // 监听position的y坐标，超过阈值即显示
+      this.isShowTop(position)
 
       // 监听tabControl
       this.isShowTabControl = -position.y > this.tabControlTop

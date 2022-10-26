@@ -1,7 +1,7 @@
 <template>
   <div class="goods-list-item" @click="itemClick">
     <!-- vue的图片监听：@load -->
-    <img :src="item.show.img" alt="" @load="itemImgLoad">
+    <img :src="showImg" alt="" @load="itemImgLoad">
     <!-- <img :src="item.show.img" alt=""> -->
     <div class="item-info">
       <p>{{item.title}}</p>
@@ -20,6 +20,16 @@ export default {
       default () {
         return {}
       }
+    }
+  },
+  computed: {
+    //由于home和detail的图片存放位置不同，所以这里需要进行一次数据变化
+    showImg () {
+      // return this.item.show.img || this.item.image
+      // 对于详情页，由于item没有show属性，this.item.show等于undefined, 所以等价于 return undefined.img || this.item.image ，而调用undefined属性就会报错
+      return this.item.image || this.item.show.img
+      // 对于首页，等价于   return undefined || this.item.show.img
+      // 对于详情页，等价于 return this.item.image
     }
   },
   methods: {

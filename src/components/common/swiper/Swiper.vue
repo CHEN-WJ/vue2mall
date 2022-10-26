@@ -57,6 +57,30 @@ export default {
   //     this.startTimer();
   //   }, 2000)
   // },
+  // mounted () {
+  //   this.$nextTick(() => {
+  //     let swiperEl = this.$refs.swiper;
+  //     let slidesEls = swiperEl.getElementsByClassName('slide');
+  //     console.log(slidesEls); //打印数组有4个slide
+
+  //     // 2.保存个数
+  //     this.slideCount = slidesEls.length;
+  //     console.log(this.slideCount); //0
+  //   })
+  // },
+  // mounted () {
+  //   new Promise(resolve => {
+  //     resolve()
+  //   }).then(res => {
+  //     let swiperEl = this.$refs.swiper;
+  //     let slidesEls = swiperEl.getElementsByClassName('slide');
+  //     console.log(slidesEls); //打印数组有4个slide
+
+  //     // 2.保存个数
+  //     this.slideCount = slidesEls.length;
+  //     console.log(this.slideCount); //0
+  //   })
+  // },
   updated () {
     if (this.openTimer) {
       this.handleDom();

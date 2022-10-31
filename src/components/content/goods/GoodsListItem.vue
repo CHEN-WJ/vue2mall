@@ -1,7 +1,7 @@
 <template>
   <div class="goods-list-item" @click="itemClick">
     <!-- vue的图片监听：@load -->
-    <img :src="showImg" alt="" @load="itemImgLoad">
+    <img v-lazy="showImg" alt="" @load="itemImgLoad">
     <!-- <img :src="item.show.img" alt=""> -->
     <div class="item-info">
       <p>{{item.title}}</p>

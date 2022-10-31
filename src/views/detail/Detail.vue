@@ -3,9 +3,6 @@
     <detail-nav-bar @itemIndex="itemIndex" class="detail-nav" ref="navBar" />
     <scroll class="detail-scroll" ref="scroll" @scrollPosition="scrollPosition"
       :probe-type="3">
-      <ul>
-        <li v-for="item in this.$store.state.goodsList">{{item}}</li>
-      </ul>
       <detail-swiper :top-images="topImages" />
       <detail-goods-info :goods-info="goodsInfo"></detail-goods-info>
       <detail-shop-info :shop="shop"></detail-shop-info>
@@ -17,6 +14,7 @@
     </scroll>
     <detail-bottom-bar class="bottom-bar" @addToCart="addToCart" />
     <back-top @click.native="topClick" v-show="showTop" />
+    <!-- <toast :msg="msg" :show="show" class="toast"></toast> -->
   </div>
 </template>
 
@@ -35,6 +33,9 @@ import GoodsList from 'components/content/goods/GoodsList'
 
 import { getDetail, getRecommend, GoodsInfo, Shop, ParamsInfo } from 'network/detail'
 import { mixin, backTopMixin } from 'common/mixins'
+import { mapActions } from 'vuex'
+
+// import Toast from 'components/common/toast/Toast'
 
 export default {
   name: "Detail",
@@ -48,7 +49,8 @@ export default {
     DetailCommentInfo,
     DetailBottomBar,
     Scroll,
-    GoodsList
+    GoodsList,
+    // Toast
   },
   data () {
     return {
@@ -61,10 +63,14 @@ export default {
       commentInfo: {},
       recommend: [],
       itemOffsetTops: [],
+      // msg: '',
+      // show: false
     }
   },
   mixins: [mixin, backTopMixin],
   methods: {
+    //映射actions
+    ...mapActions(['addGoods']),
     // 图片加载后调用
     imgLoad () {
       //刷新，防止better-scroll问题
@@ -114,7 +120,14 @@ export default {
       cart.price = this.goodsInfo.realPrice
 
       //2. 将商品添加到购物车中
-      this.$store.dispatch('addGoods', cart)
+      // this.$store.dispatch('addGoods', cart).then(res => {
+      //   //添加成功回调
+      //   console.log(res);
+      // })
+      this.addGoods(cart).then(res => {
+        //添加成功回调
+        this.$toast.show(res, 1500)
+      })
     }
   },
   created () {
